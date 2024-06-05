@@ -1,0 +1,13 @@
+{
+  "name": "data-collector",
+  "version": "1.0.0",
+  "description": "Data collector for vehicle communication",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "mqtt": "^4.2.8",
+    "influx": "^5.9.2"
+  }
+}

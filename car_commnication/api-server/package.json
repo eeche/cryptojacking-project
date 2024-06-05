@@ -1,0 +1,13 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "description": "API server for vehicle communication",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "influx": "^5.9.2"
+  }
+}
