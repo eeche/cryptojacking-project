@@ -4,6 +4,7 @@ import pandas as pd
 import joblib
 from collections import Counter
 from datetime import datetime, timedelta
+import numpy as np
 
 # 추출할 시스템 콜 목록
 target_syscalls = [
@@ -75,6 +76,14 @@ def predict_with_model(df, model_path, scaler_path):
     predictions = model.predict(X)
     return predictions, X
 
+# 과반수 예측값 및 비율 계산 함수
+def majority_vote(predictions):
+    count = Counter(predictions)
+    majority_value, majority_count = count.most_common(1)[0]
+    total_count = len(predictions)
+    majority_percentage = (majority_count / total_count) * 100
+    return majority_value, majority_percentage
+
 # 메인 함수
 if __name__ == "__main__":
     log_file_path = sys.argv[1]
@@ -102,5 +111,13 @@ if __name__ == "__main__":
     print("Dataframe after scaling:")
     print(scaled_df)
     
+    # 과반수 예측값 및 비율 계산
+    majority_value, majority_percentage = majority_vote(predictions)
+    
+    # 예측 결과의 분포 출력
+    prediction_counts = Counter(predictions)
+    print(f"Prediction distribution: {prediction_counts}")
+    
     # 결과 출력
     print(f"Predictions: {predictions}")
+    print(f"Majority Prediction: {majority_value} ({majority_percentage:.2f}%)")
