@@ -32,6 +32,11 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
+# 스케일링 후 데이터 형태 출력
+print("Scaled X_train shape:", X_train.shape)
+print("Scaled X_test shape:", X_test.shape)
+print("First 5 rows of scaled X_train:\n", X_train[:5])
+
 # 모델 정의
 gnb = GaussianNB()
 knn = KNeighborsClassifier()

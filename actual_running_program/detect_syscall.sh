@@ -2,12 +2,12 @@
 
 # 현재 시간 형식 설정
 CURRENT_TIME=$(date "+%Y%m%d_%H%M%S")
-LOG_DIR="/tmp/cjchek"
+LOG_DIR="/tmp/cjcheck"
 LOG_FILE="${LOG_DIR}/${CURRENT_TIME}.txt"
 FREQUENCY_FILE="${LOG_FILE%.txt}_frequency.txt"
-MODEL_FILE="voting_classifier_model.pkl"
+MODEL_FILE="random_forest_model.pkl"
 SCALER_FILE="scaler.pkl"
-PYTHON_SCRIPT="/path/to/your/python_script.py"
+PYTHON_SCRIPT="/detect_syscall.py"
 
 # 디렉토리 생성
 mkdir -p $LOG_DIR
