@@ -14,6 +14,8 @@ VENV_DIR="${SCRIPT_DIR}/venv"
 # 디렉토리 생성 (현재 디렉토리 사용)
 mkdir -p $SCRIPT_DIR
 
+sudo apt-get install python3-distutils
+
 # Python 가상 환경 설정 및 활성화
 if [ ! -d "$VENV_DIR" ]; then
     echo "가상 환경을 생성합니다."
@@ -23,7 +25,8 @@ source $VENV_DIR/bin/activate
 
 # Python 패키지 확인 및 설치 함수
 install_python_packages() {
-    packages=(pandas joblib disutils scikit-learn==1.1.1)
+
+    packages=(pandas joblib xgboost scikit-learn==1.5.0)
     for package in "${packages[@]}"; do
         if ! python3 -c "import $package" &> /dev/null; then
             echo "Python package $package is not installed. Installing..."
@@ -40,7 +43,7 @@ install_python_packages
 # trace-cmd 실행 (5분간)
 sudo $TRACE_CMD record -e syscalls -o "${SCRIPT_DIR}/trace.dat" & TRACE_CMD_PID=$!
 
-sleep 300
+sleep 6
 
 sudo kill -SIGINT $TRACE_CMD_PID
 
