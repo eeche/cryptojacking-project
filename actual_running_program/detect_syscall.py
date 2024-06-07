@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 import joblib
 from collections import Counter
+from datetime import datetime, timedelta
 
 # 추출할 시스템 콜 목록
 target_syscalls = [
@@ -24,8 +25,31 @@ def parse_log_file(file_path):
             if match:
                 process, cpu, timestamp, syscall, args = match.groups()
                 if 'trace-cmd' not in process:
-                    data.append(syscall)
+                    timestamp = float(timestamp)  # 타임스탬프를 float으로 변환
+                    data.append((timestamp, syscall))
     return data
+
+# 6초 단위로 데이터 나누기
+def split_data_by_time(data, interval=6):
+    data.sort(key=lambda x: x[0])  # 타임스탬프로 정렬
+    start_time = data[0][0]
+    end_time = start_time + interval
+    split_data = []
+    current_interval_data = []
+
+    for timestamp, syscall in data:
+        if timestamp < end_time:
+            current_interval_data.append(syscall)
+        else:
+            split_data.append(current_interval_data)
+            current_interval_data = [syscall]
+            start_time = timestamp
+            end_time = start_time + interval
+
+    if current_interval_data:
+        split_data.append(current_interval_data)
+
+    return split_data
 
 # 시스템 호출 빈도 계산 함수
 def enter_syscall_counter(data, target_features):
@@ -35,9 +59,11 @@ def enter_syscall_counter(data, target_features):
     return sorted_syscalls
 
 # 빈도 데이터프레임 생성 함수
-def create_frequency_dataframe(syscall_counts, target_features):
-    # Ensure all target features are in the dataframe
-    df_dict = {feature: [syscall_counts.get(feature, 0)] for feature in target_features}
+def create_frequency_dataframe(syscall_counts_list, target_features):
+    df_dict = {feature: [] for feature in target_features}
+    for syscall_counts in syscall_counts_list:
+        for feature in target_features:
+            df_dict[feature].append(syscall_counts.get(feature, 0))
     df = pd.DataFrame(df_dict)
     return df
 
@@ -47,7 +73,7 @@ def predict_with_model(df, model_path, scaler_path):
     scaler = joblib.load(scaler_path)
     X = scaler.transform(df)
     predictions = model.predict(X)
-    return predictions
+    return predictions, X
 
 # 메인 함수
 if __name__ == "__main__":
@@ -57,13 +83,24 @@ if __name__ == "__main__":
 
     # 로그 파일 파싱
     data = parse_log_file(log_file_path)
-    syscall_counts = enter_syscall_counter(data, target_syscalls)
+    
+    # 6초 단위로 데이터 나누기
+    split_data = split_data_by_time(data, interval=6)
     
     # 빈도 데이터프레임 생성
-    df = create_frequency_dataframe(syscall_counts, target_syscalls)
+    syscall_counts_list = [enter_syscall_counter(interval_data, target_syscalls) for interval_data in split_data]
+    df = create_frequency_dataframe(syscall_counts_list, target_syscalls)
+    
+    # 스케일러 적용 전 데이터프레임 출력
+    print("Dataframe before scaling:")
+    print(df)
     
     # 모델 예측
-    predictions = predict_with_model(df, model_file_path, scaler_file_path)
+    predictions, scaled_df = predict_with_model(df, model_file_path, scaler_file_path)
+    
+    # 스케일러 적용 후 데이터프레임 출력
+    print("Dataframe after scaling:")
+    print(scaled_df)
     
     # 결과 출력
     print(f"Predictions: {predictions}")
