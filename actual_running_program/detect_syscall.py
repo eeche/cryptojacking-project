@@ -17,6 +17,8 @@ target_syscalls = [
 ]
 
 # 로그 파일 파싱 함수
+
+
 def parse_log_file(file_path):
     syscall_pattern = re.compile(r'(.*)\[(\d+)\]\s+([\d.]+):\s+(\w+):\s+(.*)')
     data = []
@@ -31,6 +33,8 @@ def parse_log_file(file_path):
     return data
 
 # 6초 단위로 데이터 나누기
+
+
 def split_data_by_time(data, interval=6):
     data.sort(key=lambda x: x[0])  # 타임스탬프로 정렬
     start_time = data[0][0]
@@ -53,13 +57,18 @@ def split_data_by_time(data, interval=6):
     return split_data
 
 # 시스템 호출 빈도 계산 함수
+
+
 def enter_syscall_counter(data, target_features):
     sys_enter_data = [syscall for syscall in data if 'sys_enter_' in syscall]
     syscall_counter = Counter(sys_enter_data)
-    sorted_syscalls = {syscall: syscall_counter[syscall] for syscall in target_features if syscall in syscall_counter}
+    sorted_syscalls = {syscall: syscall_counter[syscall]
+                       for syscall in target_features if syscall in syscall_counter}
     return sorted_syscalls
 
 # 빈도 데이터프레임 생성 함수
+
+
 def create_frequency_dataframe(syscall_counts_list, target_features):
     df_dict = {feature: [] for feature in target_features}
     for syscall_counts in syscall_counts_list:
@@ -69,6 +78,8 @@ def create_frequency_dataframe(syscall_counts_list, target_features):
     return df
 
 # 모델 예측 함수
+
+
 def predict_with_model(df, model_path, scaler_path):
     model = joblib.load(model_path)
     scaler = joblib.load(scaler_path)
@@ -77,12 +88,15 @@ def predict_with_model(df, model_path, scaler_path):
     return predictions, X
 
 # 과반수 예측값 및 비율 계산 함수
+
+
 def majority_vote(predictions):
     count = Counter(predictions)
     majority_value, majority_count = count.most_common(1)[0]
     total_count = len(predictions)
     majority_percentage = (majority_count / total_count) * 100
     return majority_value, majority_percentage
+
 
 # 메인 함수
 if __name__ == "__main__":
@@ -92,32 +106,35 @@ if __name__ == "__main__":
 
     # 로그 파일 파싱
     data = parse_log_file(log_file_path)
-    
+
     # 6초 단위로 데이터 나누기
     split_data = split_data_by_time(data, interval=6)
-    
+
     # 빈도 데이터프레임 생성
-    syscall_counts_list = [enter_syscall_counter(interval_data, target_syscalls) for interval_data in split_data]
+    syscall_counts_list = [enter_syscall_counter(
+        interval_data, target_syscalls) for interval_data in split_data]
     df = create_frequency_dataframe(syscall_counts_list, target_syscalls)
-    
+
     # 스케일러 적용 전 데이터프레임 출력
     print("Dataframe before scaling:")
     print(df)
-    
+
     # 모델 예측
-    predictions, scaled_df = predict_with_model(df, model_file_path, scaler_file_path)
-    
+    predictions, scaled_df = predict_with_model(
+        df, model_file_path, scaler_file_path)
+
     # 스케일러 적용 후 데이터프레임 출력
     print("Dataframe after scaling:")
     print(scaled_df)
-    
+
     # 과반수 예측값 및 비율 계산
     majority_value, majority_percentage = majority_vote(predictions)
-    
+
     # 예측 결과의 분포 출력
     prediction_counts = Counter(predictions)
     print(f"Prediction distribution: {prediction_counts}")
-    
+
     # 결과 출력
     print(f"Predictions: {predictions}")
-    print(f"Majority Prediction: {majority_value} ({majority_percentage:.2f}%)")
+    print(
+        f"Majority Prediction: {majority_value} ({majority_percentage:.2f}%)")
