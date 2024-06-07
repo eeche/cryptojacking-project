@@ -13,7 +13,7 @@ from sklearn.metrics import classification_report, accuracy_score
 import joblib
 
 # 데이터 로드
-file_path = 'new_frequency_features_corrected.csv'
+file_path = 'C:\\Users\\dlckd\\Desktop\\cryptoProject\\data_preprocess\\new_frequency_features_corrected.csv'
 data = pd.read_csv(file_path)
 
 # 데이터 분리
@@ -25,7 +25,8 @@ if X.shape[1] > 60:
     X = X.iloc[:, :60]
 
 # 학습용과 테스트용 데이터셋으로 분리
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)
 
 # 스케일링
 scaler = StandardScaler()
@@ -45,6 +46,8 @@ lgbm = LGBMClassifier()
 catboost = CatBoostClassifier(verbose=0)
 
 # 모델 학습 및 평가 함수
+
+
 def train_and_evaluate(models, X_train, X_test, y_train, y_test):
     results = {}
     for name, model in models:
@@ -58,16 +61,18 @@ def train_and_evaluate(models, X_train, X_test, y_train, y_test):
         }
     return results
 
+
 # 개별 모델 학습 및 평가
 models = [
-    ('GNB', gnb), ('KNN', knn), ('LR', lr), ('SVM', svm), 
-    ('RF', rf), ('GB', gb), ('XGB', xgb_clf), ('AdaBoost', ada), 
+    ('GNB', gnb), ('KNN', knn), ('LR', lr), ('SVM', svm),
+    ('RF', rf), ('GB', gb), ('XGB', xgb_clf), ('AdaBoost', ada),
     ('LightGBM', lgbm), ('CatBoost', catboost)
 ]
 results_freq = train_and_evaluate(models, X_train, X_test, y_train, y_test)
 
 # Voting Classifier 정의 및 평가 (soft voting)
-voting_clf = VotingClassifier(estimators=[('GNB', gnb), ('LR', lr), ('RF', rf), ('XGB', xgb_clf)], voting='soft')
+voting_clf = VotingClassifier(estimators=[(
+    'GNB', gnb), ('LR', lr), ('RF', rf), ('XGB', xgb_clf)], voting='soft')
 voting_clf.fit(X_train, y_train)
 y_pred_voting = voting_clf.predict(X_test)
 results_freq['Voting'] = {
@@ -91,9 +96,3 @@ results_freq_df.to_csv('model_results.csv')
 # 모델 저장
 joblib.dump(voting_clf, 'voting_classifier_model.pkl')
 joblib.dump(scaler, 'scaler.pkl')
-
-# 모델 로드 및 사용 예시
-# voting_clf_loaded = joblib.load('voting_classifier_model.pkl')
-# scaler_loaded = joblib.load('scaler.pkl')
-# X_new_scaled = scaler_loaded.transform(X_new)
-# y_new_pred = voting_clf_loaded.predict(X_new_scaled)
