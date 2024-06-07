@@ -9,9 +9,33 @@ MODEL_FILE="${SCRIPT_DIR}/voting_classifier_model.pkl"
 SCALER_FILE="${SCRIPT_DIR}/scaler.pkl"
 PYTHON_SCRIPT="${SCRIPT_DIR}/detect_syscall.py"
 TRACE_CMD="/usr/bin/trace-cmd"  # trace-cmd의 절대 경로
+VENV_DIR="${SCRIPT_DIR}/venv"
 
 # 디렉토리 생성 (현재 디렉토리 사용)
 mkdir -p $SCRIPT_DIR
+
+# Python 가상 환경 설정 및 활성화
+if [ ! -d "$VENV_DIR" ]; then
+    echo "가상 환경을 생성합니다."
+    python3 -m venv $VENV_DIR
+fi
+source $VENV_DIR/bin/activate
+
+# Python 패키지 확인 및 설치 함수
+install_python_packages() {
+    packages=(pandas joblib scikit-learn==1.5.0)
+    for package in "${packages[@]}"; do
+        if ! python3 -c "import $package" &> /dev/null; then
+            echo "Python package $package is not installed. Installing..."
+            pip install $package
+        else
+            echo "Python package $package is already installed."
+        fi
+    done
+}
+
+# 필요한 Python 패키지 설치
+install_python_packages
 
 # trace-cmd 실행 (5분간)
 sudo $TRACE_CMD record -e syscalls -o "${SCRIPT_DIR}/trace.dat" & TRACE_CMD_PID=$!
@@ -24,4 +48,7 @@ sudo kill -SIGINT $TRACE_CMD_PID
 sudo $TRACE_CMD report "${SCRIPT_DIR}/trace.dat" > $LOG_FILE
 
 # Python 스크립트 실행
-sudo -H python3 $PYTHON_SCRIPT $LOG_FILE $MODEL_FILE $SCALER_FILE $FREQUENCY_FILE
+python3 $PYTHON_SCRIPT $LOG_FILE $MODEL_FILE $SCALER_FILE $FREQUENCY_FILE
+
+# 가상 환경 비활성화
+deactivate
