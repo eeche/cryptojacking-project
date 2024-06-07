@@ -23,7 +23,7 @@ source $VENV_DIR/bin/activate
 
 # Python 패키지 확인 및 설치 함수
 install_python_packages() {
-    packages=(pandas joblib scikit-learn==1.1.1)
+    packages=(pandas joblib disutils scikit-learn==1.1.1)
     for package in "${packages[@]}"; do
         if ! python3 -c "import $package" &> /dev/null; then
             echo "Python package $package is not installed. Installing..."
