@@ -2,9 +2,9 @@ import csv
 import pandas as pd
 
 df = pd.read_csv(
-    'C:\\Users\\dlckd\\Desktop\\cryptoProject\\random_forest\\new_frequency_features_corrected.csv')
+    'C:\\Users\\dlckd\\Desktop\\cryptoProject\\Data\\features_based_time.csv')
 add = pd.read_csv(
-    'C:\\Users\\dlckd\\Desktop\\cryptoProject\\features_count.csv')
+    'C:\\Users\\dlckd\\Desktop\\cryptoProject\\Data\\features_based_count.csv')
 
 merged_dataframe = pd.concat([df, add])
 
