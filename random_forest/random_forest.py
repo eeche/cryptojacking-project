@@ -1,26 +1,71 @@
-import joblib
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, accuracy_score
+import re
+import sys
 import pandas as pd
+import joblib
+from collections import Counter
 
-# data_path = 'new_frequency_features_corrected.csv'
-data_path = 'C:\\Users\\dlckd\\Desktop\\cryptoProject\\merged.csv'
+# 추출할 시스템 콜 목록
+target_syscalls = [
+    "sys_enter_recvmsg", "sys_enter_futex", "sys_enter_pwrite64", "sys_enter_read", "sys_enter_poll",
+    "sys_enter_write", "sys_enter_epoll_wait", "sys_enter_ioctl", "sys_enter_mprotect", "sys_enter_newfstatat",
+    "sys_enter_madvise", "sys_enter_lseek", "sys_enter_splice", "sys_enter_writev", "sys_enter_close",
+    "sys_enter_openat", "sys_enter_clock_nanosleep", "sys_enter_sendmsg", "sys_enter_mmap", "sys_enter_epoll_pwait",
+    "sys_enter_newfstat", "sys_enter_nanosleep", "sys_enter_rt_sigaction", "sys_enter_getrandom", "sys_enter_prctl",
+    "sys_enter_readlink", "sys_enter_fcntl", "sys_enter_geteuid", "sys_enter_getuid", "sys_enter_getegid"
+]
 
-data = pd.read_csv(data_path)
+# 로그 파일 파싱 함수
+def parse_log_file(file_path):
+    syscall_pattern = re.compile(r'(.*)\[(\d+)\]\s+([\d.]+):\s+(\w+):\s+(.*)')
+    data = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            match = syscall_pattern.search(line)
+            if match:
+                process, cpu, timestamp, syscall, args = match.groups()
+                if 'trace-cmd' not in process:
+                    data.append(syscall)
+    return data
 
-X = data.iloc[:, :-1]
-y = data.iloc[:, -1]
+# 시스템 호출 빈도 계산 함수
+def enter_syscall_counter(data, target_features):
+    sys_enter_data = [syscall for syscall in data if 'sys_enter_' in syscall]
+    syscall_counter = Counter(sys_enter_data)
+    sorted_syscalls = {syscall: syscall_counter[syscall] for syscall in target_features if syscall in syscall_counter}
+    return sorted_syscalls
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42)
+# 빈도 데이터프레임 생성 함수
+def create_frequency_dataframe(syscall_counts, target_features):
+    # Ensure all target features are in the dataframe
+    for feature in target_features:
+        if feature not in syscall_counts:
+            syscall_counts[feature] = 0
+    df = pd.DataFrame([syscall_counts], columns=target_features)
+    return df
 
-random_forest_model = RandomForestClassifier(n_estimators=10, random_state=42)
-random_forest_model.fit(X_train, y_train)
-joblib.dump(random_forest_model, 'random_forest_model.pkl')
-model_loaded = joblib.load('random_forest_model.pkl')
+# 모델 예측 함수
+def predict_with_model(df, model_path, scaler_path):
+    model = joblib.load(model_path)
+    scaler = joblib.load(scaler_path)
+    X = scaler.transform(df)
+    predictions = model.predict(X)
+    return predictions
 
-y_pred = model_loaded.predict(X_test)
+# 메인 함수
+if __name__ == "__main__":
+    log_file_path = sys.argv[1]
+    model_file_path = sys.argv[2]
+    scaler_file_path = sys.argv[3]
 
-print(f"정확도:, {accuracy_score(y_test, y_pred) * 100: .2f}%")
-print("분류 보고서:\n", classification_report(y_test, y_pred))
+    # 로그 파일 파싱
+    data = parse_log_file(log_file_path)
+    syscall_counts = enter_syscall_counter(data, target_syscalls)
+    
+    # 빈도 데이터프레임 생성
+    df = create_frequency_dataframe(syscall_counts, target_syscalls)
+    
+    # 모델 예측
+    predictions = predict_with_model(df, model_file_path, scaler_file_path)
+    
+    # 결과 출력
+    print(f"Predictions: {predictions}")
