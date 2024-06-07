@@ -13,7 +13,7 @@ from sklearn.metrics import classification_report, accuracy_score
 import joblib
 
 # 데이터 로드
-file_path = 'C:\\Users\\dlckd\\Desktop\\cryptoProject\\data_preprocess\\new_frequency_features_corrected.csv'
+file_path = '../Data/features_based_count.csv'
 data = pd.read_csv(file_path)
 
 # 데이터 분리
