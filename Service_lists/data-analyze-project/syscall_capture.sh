@@ -1,14 +1,60 @@
 #!/bin/bash
+NUM_ITERATIONS=5
 
 docker-compose up -d locust
 
+sleep 10
+
+SAVE_DIR=~/Desktop/syscall
+mkdir -p $SAVE_DIR
+
 sudo trace-cmd record -e syscalls &
 TRACE_CMD_PID=$!
-
-sleep 600
+sleep 10
 sudo kill -SIGINT $TRACE_CMD_PID
+sleep 5
 
+for ((n=1; n<=NUM_ITERATIONS; n++))
+do
+    sudo trace-cmd record -e syscalls &
+    TRACE_CMD_PID=$!
+
+    sleep 6
+
+    sudo kill -SIGINT $TRACE_CMD_PID
+    sleep 5
+
+    sudo trace-cmd report > $SAVE_DIR/data_analyze_$n.txt
+    echo "시스템 콜 데이터는 $SAVE_DIR/data_analyze_$n.txt 에 저장되었습니다."
+    sleep 10
+done
+
+docker run -d \
+    -e TZ=Europe/Berlin \
+    -v ~/.bytecoin:/root/.bytecoin \
+    --restart unless-stopped \
+    -p 8080:8080 \
+    -p 8081:8081 \
+    --name bytecoin-fullnode \
+    rafalsladek/bytecoin-docker
+
+sleep 10
+
+for ((n=1; n<=NUM_ITERATIONS; n++))
+do
+    sudo trace-cmd record -e syscalls &
+    TRACE_CMD_PID=$!
+
+    sleep 6
+
+    sudo kill -SIGINT $TRACE_CMD_PID
+    sleep 5
+
+    sudo trace-cmd report > $SAVE_DIR/data_analyze_bytecoin_$n.txt
+    echo "시스템 콜 데이터는 $SAVE_DIR/data_analyze_bytecoin_$n.txt 에 저장되었습니다."
+    sleep 10
+done
+
+sudo aa-remove-unknown
 docker-compose down
-sudo trace-cmd report > trace.txt
-
-echo "완료되었습니다. 시스템 콜 데이터는 trace.txt 에 저장되었습니다."
+docker rm -f bytecoin-fullnode
