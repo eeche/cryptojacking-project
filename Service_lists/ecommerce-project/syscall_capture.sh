@@ -18,6 +18,7 @@ TRACE_CMD_PID=$!
 sleep 10
 sudo kill -SIGINT $TRACE_CMD_PID
 sleep 5
+sudo trace-cmd report > trace.txt
 
 for ((n=1; n<=NUM_ITERATIONS; n++))
 do
