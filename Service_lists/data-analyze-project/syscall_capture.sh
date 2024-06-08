@@ -38,7 +38,7 @@ docker run -d \
     -e TZ=Europe/Berlin \
     -v ~/.bytecoin:/root/.bytecoin \
     --restart unless-stopped \
-    -p 8080:8080 \
+    -p 8082:8082 \
     -p 8081:8081 \
     --name bytecoin-fullnode \
     rafalsladek/bytecoin-docker
