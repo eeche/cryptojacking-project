@@ -1,9 +1,14 @@
 #!/bin/bash
 NUM_ITERATIONS=5
 
-docker-compose up -d locust
+docker-compose up -d
 
-sleep 10
+docker run -d --name locust_temp \
+  -v $(pwd)/locustfile.py:/mnt/locust/locustfile.py \
+  locustio/locust \
+  -f /mnt/locust/locustfile.py --headless -u 100 -r 10 --host http://nginx
+
+sleep 100
 
 SAVE_DIR=~/Desktop/syscall
 mkdir -p $SAVE_DIR
@@ -19,7 +24,7 @@ do
     sudo trace-cmd record -e syscalls &
     TRACE_CMD_PID=$!
 
-    sleep 6
+    sleep 600
 
     sudo kill -SIGINT $TRACE_CMD_PID
     sleep 5
@@ -45,7 +50,7 @@ do
     sudo trace-cmd record -e syscalls &
     TRACE_CMD_PID=$!
 
-    sleep 6
+    sleep 600
 
     sudo kill -SIGINT $TRACE_CMD_PID
     sleep 5
@@ -58,3 +63,4 @@ done
 sudo aa-remove-unknown
 docker-compose down
 docker rm -f bytecoin-fullnode
+docker rm -f locust_temp

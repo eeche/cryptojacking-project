@@ -45,17 +45,6 @@ services:
     volumes:
       - es_data:/usr/share/elasticsearch/data
 
-  locust:
-    image: locustio/locust
-    volumes:
-      - ./locustfile.py:/mnt/locust/locustfile.py
-    networks:
-      - default
-    command: >
-      locust -f /mnt/locust/locustfile.py --headless -u 100 -r 10 --run-time 10m --host http://web
-    depends_on:
-      - web
-
 volumes:
   db_data:
   es_data:

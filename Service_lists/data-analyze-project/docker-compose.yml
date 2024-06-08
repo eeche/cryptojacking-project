@@ -8,8 +8,6 @@ services:
       - "8888:8888"
     volumes:
       - ./notebooks:/home/jovyan/work
-    networks:
-      - mynetwork
 
   spark:
     image: bitnami/spark:latest
@@ -19,8 +17,6 @@ services:
     ports:
       - "8080:8080"
       - "7077:7077"
-    networks:
-      - mynetwork
     volumes:
       - spark_data:/bitnami/spark
 
@@ -32,8 +28,6 @@ services:
       - SPARK_MASTER_URL=spark://spark:7077
     depends_on:
       - spark
-    networks:
-      - mynetwork
 
   hdfs-namenode:
     image: bde2020/hadoop-namenode:latest
@@ -45,8 +39,6 @@ services:
     ports:
       - "9870:9870"
       - "9000:9000"
-    networks:
-      - mynetwork
     volumes:
       - hdfs_namenode_data:/hadoop/dfs/name
 
@@ -60,8 +52,6 @@ services:
       - hdfs-namenode
     ports:
       - "9864:9864"
-    networks:
-      - mynetwork
     volumes:
       - hdfs_datanode_data:/hadoop/dfs/data
 
@@ -75,34 +65,14 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     depends_on:
       - zookeeper
-    networks:
-      - mynetwork
 
   zookeeper:
     image: wurstmeister/zookeeper:latest
     container_name: zookeeper
     ports:
       - "2181:2181"
-    networks:
-      - mynetwork
-
-  locust:
-    image: locustio/locust
-    volumes:
-      - ./locustfile.py:/mnt/locust/locustfile.py
-    networks:
-      - mynetwork
-    command: >
-      locust -f /mnt/locust/locustfile.py --headless -u 100 -r 10 --run-time 10m --host http://jupyter
-    depends_on:
-      - jupyter
-
-networks:
-  mynetwork:
-    driver: bridge
 
 volumes:
   spark_data:
   hdfs_namenode_data:
   hdfs_datanode_data:
-
