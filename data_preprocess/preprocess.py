@@ -71,9 +71,9 @@ target_syscalls = [
     "sys_enter_write", "sys_enter_epoll_wait", "sys_enter_ioctl", "sys_enter_mprotect", "sys_enter_newfstatat",
     "sys_enter_madvise", "sys_enter_lseek", "sys_enter_splice", "sys_enter_writev", "sys_enter_close",
     "sys_enter_openat", "sys_enter_clock_nanosleep", "sys_enter_sendmsg", "sys_enter_mmap", "sys_enter_epoll_pwait",
-    "sys_enter_newfstat", "sys_enter_nanosleep", "sys_enter_rt_sigaction", "sys_enter_getrandom", "sys_enter_prctl",
-    "sys_enter_readlink", "sys_enter_fcntl", "sys_enter_geteuid", "sys_enter_getuid", "sys_enter_getegid"
+    "sys_enter_rt_sigaction", "sys_enter_fcntl", "sys_enter_rt_sigprocmask", "sys_enter_nanosleep", "sys_enter_newstat"
 ]
+
 
 
 def get_file_list(directory, suffix):

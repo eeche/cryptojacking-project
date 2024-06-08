@@ -8,13 +8,13 @@ import numpy as np
 
 # 추출할 시스템 콜 목록
 target_syscalls = [
-    "sys_enter_clock_nanosleep", "sys_enter_close", "sys_enter_epoll_pwait", "sys_enter_epoll_wait", "sys_enter_fcntl",
-    "sys_enter_futex", "sys_enter_getegid", "sys_enter_geteuid", "sys_enter_getrandom", "sys_enter_getuid",
-    "sys_enter_ioctl", "sys_enter_lseek", "sys_enter_madvise", "sys_enter_mmap", "sys_enter_mprotect",
-    "sys_enter_nanosleep", "sys_enter_newfstat", "sys_enter_newfstatat", "sys_enter_openat", "sys_enter_poll",
-    "sys_enter_prctl", "sys_enter_pwrite64", "sys_enter_read", "sys_enter_readlink", "sys_enter_recvmsg",
-    "sys_enter_rt_sigaction", "sys_enter_sendmsg", "sys_enter_splice", "sys_enter_write", "sys_enter_writev"
+    "sys_enter_recvmsg", "sys_enter_futex", "sys_enter_pwrite64", "sys_enter_read", "sys_enter_poll",
+    "sys_enter_write", "sys_enter_epoll_wait", "sys_enter_ioctl", "sys_enter_mprotect", "sys_enter_newfstatat",
+    "sys_enter_madvise", "sys_enter_lseek", "sys_enter_splice", "sys_enter_writev", "sys_enter_close",
+    "sys_enter_openat", "sys_enter_clock_nanosleep", "sys_enter_sendmsg", "sys_enter_mmap", "sys_enter_epoll_pwait",
+    "sys_enter_rt_sigaction", "sys_enter_fcntl", "sys_enter_rt_sigprocmask", "sys_enter_nanosleep", "sys_enter_newstat"
 ]
+
 
 # 로그 파일 파싱 함수
 
