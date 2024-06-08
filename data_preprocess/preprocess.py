@@ -4,64 +4,12 @@ import pandas as pd
 # 파일 경로 목록
 file_dirs = {
     'normal': {
-        'frequency': [
-            'blockchain/normal',
-            'blog/normal',
-            'car/normal',
-            'iot/normal',
-            'mobilegame/normal',
-            'splunk/normal',
-            'dap_1/normal',
-            'dap_2/normal',
-            'dp_1/normal',
-            'dp_2/normal',
-            'ep_1/normal',
-            'ep_2/normal',
-        ],
-        '3gram_frequency': [
-            'blockchain/normal',
-            'blog/normal',
-            'car/normal',
-            'iot/normal',
-            'mobilegame/normal',
-            'splunk/normal',
-            'dap_1/normal',
-            'dap_2/normal',
-            'dp_1/normal',
-            'dp_2/normal',
-            'ep_1/normal',
-            'ep_2/normal',
-        ]
+        'frequency':
+            'normal'
     },
     'abnormal': {
-        'frequency': [
-            'blockchain/abnormal',
-            'blog/abnormal',
-            'car/abnormal',
-            'iot/abnormal',
-            'mobilegame/abnormal',
-            'splunk/abnormal',
-            'dap_1/abnormal',
-            'dap_2/abnormal',
-            'dp_1/abnormal',
-            'dp_2/abnormal',
-            'ep_1/abnormal',
-            'ep_2/abnormal',
-        ],
-        '3gram_frequency': [
-            'blockchain/abnormal',
-            'blog/abnormal',
-            'car/abnormal',
-            'iot/abnormal',
-            'mobilegame/abnormal',
-            'splunk/abnormal',
-            'dap_1/abnormal',
-            'dap_2/abnormal',
-            'dp_1/abnormal',
-            'dp_2/abnormal',
-            'ep_1/abnormal',
-            'ep_2/abnormal',
-        ]
+        'frequency':
+            'abnormal'
     }
 }
 
@@ -75,7 +23,6 @@ target_syscalls = [
 ]
 
 
-
 def get_file_list(directory, suffix):
     file_list = []
     for root, dirs, files in os.walk(directory):
@@ -84,59 +31,43 @@ def get_file_list(directory, suffix):
                 file_list.append(os.path.join(root, file))
     return file_list
 
-# 특정 특징 추출 함수
 
-
-def extract_target_features(file_path, target_features, is_3gram=False):
-    if is_3gram:
-        df = pd.read_csv(file_path, sep=':', header=None, names=[
-                         'feature', 'frequency'], engine='python')
-        df['feature'] = df['feature'].str.strip()
-    else:
-        df = pd.read_csv(file_path, sep=':', header=None,
-                         names=['feature', 'frequency'])
+def extract_target_features(file_path, target_features):
+    df = pd.read_csv(file_path, sep=':', header=None,
+                     names=['feature', 'frequency'])
     filtered_features = df[df['feature'].isin(target_features)]
     return filtered_features, df
 
-# 개별 파일 처리 및 데이터 준비 함수
 
-
-def prepare_individual_data(dirs, label, target_features, is_3gram=False):
+def prepare_individual_data(dirs, label, target_features):
     all_data = []
     original_data = {}
-    suffix = '_3gram_frequency.txt' if is_3gram else '_frequency.txt'
-    for directory in dirs:
-        files = get_file_list(directory, suffix)
-        for file in files:
-            print(f'Processing file: {file}')
-            target_feature_data, full_data = extract_target_features(
-                file, target_features, is_3gram=is_3gram)
-            target_feature_data['label'] = label
-            target_feature_data['file'] = file
-            all_data.append(target_feature_data)
-            original_data[file] = full_data
+    suffix = '_frequency.txt'
+    files = get_file_list(dirs['frequency'], suffix)
+    for file in files:
+        print(f'Processing file: {file}')
+        target_feature_data, full_data = extract_target_features(
+            file, target_features)
+        target_feature_data['label'] = label
+        target_feature_data['file'] = file
+        all_data.append(target_feature_data)
+        original_data[file] = full_data
     return pd.concat(all_data, ignore_index=True), original_data
 
 
 # 정상 및 비정상 데이터 준비
-print('Preparing normal frequency data...')
 normal_freq_data, normal_freq_full = prepare_individual_data(
-    file_dirs['normal']['frequency'], label=0, target_features=target_syscalls)
-print('Preparing abnormal frequency data...')
+    file_dirs['normal'], label=0, target_features=target_syscalls)
 abnormal_freq_data, abnormal_freq_full = prepare_individual_data(
-    file_dirs['abnormal']['frequency'], label=1, target_features=target_syscalls)
+    file_dirs['abnormal'], label=1, target_features=target_syscalls)
 
 # 데이터 통합
-print('Combining frequency data...')
 all_freq_data = pd.concat(
     [normal_freq_data, abnormal_freq_data], ignore_index=True)
 full_data = {**normal_freq_full, **abnormal_freq_full}
 
-# 피처 벡터 생성 함수
-
 
 def create_feature_vector(df):
-    print('Creating feature vector...')
     feature_vector = df.pivot_table(
         index='file', columns='feature', values='frequency', fill_value=0)
     feature_vector['label'] = df.groupby('file')['label'].first()
@@ -146,11 +77,8 @@ def create_feature_vector(df):
 # 피처 벡터 생성
 X_freq = create_feature_vector(all_freq_data)
 
-# 데이터 확인 및 0 값 수정
-
 
 def correct_zeros(df, original_data):
-    print('Correcting zero values in feature vector...')
     for index, row in df.iterrows():
         file = row.name
         if file in original_data:
