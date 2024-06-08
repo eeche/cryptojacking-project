@@ -1,41 +1,28 @@
-version: '3.8'
-
+version: '3'
 services:
-  web:
-    image: nginx:latest
+  nginx:
+    build: ./nginx
     ports:
       - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - app
+      - flask
 
-  app:
-    image: tiangolo/uwsgi-nginx-flask:python3.8
-    volumes:
-      - ./app:/app
+  flask:
+    build: ./flask
     environment:
-      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://user:password@postgres:5432/blogdb
+      - AWS_ACCESS_KEY_ID=your-access-key
+      - AWS_SECRET_ACCESS_KEY=your-secret-key
     depends_on:
-      - db
-    links:
-      - db
+      - postgres
 
-  db:
-    image: postgres:latest
-    environment:
-      POSTGRES_DB: blog
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+  postgres:
+    build: ./postgres
+    ports:
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-
-  awscli:
-    image: amazon/aws-cli:latest
-    volumes:
-      - ~/.aws:/root/.aws
-    entrypoint: "/bin/sh -c"
-    command: "while true; do sleep 1000; done"
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  pgdata:
+  postgres_data:
+
