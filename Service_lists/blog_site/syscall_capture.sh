@@ -7,7 +7,7 @@ docker run -d --name locust_blog \
   -v $(pwd)/locustfile.py:/mnt/locust/locustfile.py \
   -v $(pwd)/test_file.txt:/mnt/locust/test_file.txt \
   locustio/locust \
-  -f /mnt/locust/locustfile.py --headless -u 100 -r 10 --run-time 10m --host http://nginx
+  -f /mnt/locust/locustfile.py --headless -u 100 -r 10 --host http://nginx
 
 sleep 100
 

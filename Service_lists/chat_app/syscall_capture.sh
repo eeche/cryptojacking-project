@@ -6,7 +6,7 @@ docker-compose up -d
 docker run -d --name locust_chat \
   -v $(pwd)/locustfile.py:/mnt/locust/locustfile.py \
   locustio/locust \
-  -f /mnt/locust/locustfile.py --headless -u 100 -r 10 --run-time 10m --host http://node:3000
+  -f /mnt/locust/locustfile.py --headless -u 100 -r 10 --host http://node:3000
 
 sleep 100
 
