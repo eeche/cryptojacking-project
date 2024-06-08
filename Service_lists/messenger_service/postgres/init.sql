@@ -1,0 +1,3 @@
+CREATE DATABASE messenger;
+CREATE USER postgres WITH PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE messenger TO postgres;
