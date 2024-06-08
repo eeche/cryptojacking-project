@@ -1,24 +1,40 @@
 #!/bin/bash
 
-# Docker Compose로 주요 컨테이너 실행
+# 반복 횟수 설정
+NUM_ITERATIONS=5
+
+# Docker Compose 서비스 시작
 docker-compose up -d
 
-# Locust 트래픽 생성 및 시스템 콜 캡처를 백그라운드에서 시작
 docker run -d --name locust_temp -v $(pwd)/locustfile.py:/mnt/locust/locustfile.py locustio/locust -f /mnt/locust/locustfile.py --headless -u 100 -r 10 --run-time 10m --host http://nginx
 
-# 시스템 콜 캡처 시작
-sudo trace-cmd record -e syscalls &
-TRACE_CMD_PID=$!
+sleep 100
 
-# Locust 트래픽 생성 종료 대기 (10분)
-sleep 600
+# 데이터 저장 디렉토리 설정
+SAVE_DIR=~/Desktop/syscall
+mkdir -p $SAVE_DIR
 
-# 시스템 콜 캡처 중지
-sudo kill -SIGINT $TRACE_CMD_PID
+for ((n=1; n<=NUM_ITERATIONS; n++))
+do
+    # 시스템 콜 기록 시작
+    sudo trace-cmd record -e syscalls &
+    TRACE_CMD_PID=$!
 
-# Docker Compose 및 Locust 컨테이너 정리
+    # 10분 동안 대기
+    sleep 600
+
+    # trace-cmd 종료
+    sudo kill -SIGINT $TRACE_CMD_PID
+    sleep 5
+    # 보고서 생성 및 저장
+    sudo trace-cmd report > $SAVE_DIR/django_$n.txt
+
+    echo "완료되었습니다. 시스템 콜 데이터는 $SAVE_DIR/django_$n.txt 에 저장되었습니다."
+
+    sleep 10
+done
+
+# Docker Compose 서비스 종료
+sudo aa-remove-unknown
 docker-compose down
 docker rm -f locust_temp
-
-sudo trace-cmd report > trace.txt
-echo "완료되었습니다. 시스템 콜 데이터는 trace.txt 에 저장되었습니다."
