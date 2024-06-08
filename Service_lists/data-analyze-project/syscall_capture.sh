@@ -10,7 +10,7 @@ docker run -d --name locust_temp \
 
 sleep 100
 
-SAVE_DIR=~/Desktop/syscall
+SAVE_DIR=/media/lee/0E2A-EE70/syscall
 mkdir -p $SAVE_DIR
 
 sudo trace-cmd record -e syscalls &
@@ -60,7 +60,25 @@ do
     sleep 10
 done
 
+docker rm -f bytecoin-fullnode
+docker run -e DASH_LIVENET=1 -d -p 3001:3001 -p 9999:9999 -v /root/dash-node/livenet --name dash-livenet berrywallet/bitcore-node-dash
+
+for ((n=1; n<=NUM_ITERATIONS; n++))
+do
+    sudo trace-cmd record -e syscalls &
+    TRACE_CMD_PID=$!
+
+    sleep 600
+
+    sudo kill -SIGINT $TRACE_CMD_PID
+    sleep 5
+    
+    sudo trace-cmd report > $SAVE_DIR/data_analyze_bitcore_$n.txt
+    echo "시스템 콜 데이터는 $SAVE_DIR/data_analyze_bitcore_$n.txt 에 저장되었습니다."
+    sleep 10
+done
+
 sudo aa-remove-unknown
 docker-compose down
-docker rm -f bytecoin-fullnode
 docker rm -f locust_temp
+docker rm -f dash-livenet
