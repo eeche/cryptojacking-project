@@ -27,7 +27,7 @@ do
     sleep 600
 
     sudo kill -SIGINT $TRACE_CMD_PID
-    sleep 5
+    sleep 30
 
     sudo trace-cmd report > $SAVE_DIR/data_analyze_$n.txt
     echo "시스템 콜 데이터는 $SAVE_DIR/data_analyze_$n.txt 에 저장되었습니다."
@@ -53,7 +53,7 @@ do
     sleep 600
 
     sudo kill -SIGINT $TRACE_CMD_PID
-    sleep 5
+    sleep 30
 
     sudo trace-cmd report > $SAVE_DIR/data_analyze_bytecoin_$n.txt
     echo "시스템 콜 데이터는 $SAVE_DIR/data_analyze_bytecoin_$n.txt 에 저장되었습니다."
@@ -71,7 +71,7 @@ do
     sleep 600
 
     sudo kill -SIGINT $TRACE_CMD_PID
-    sleep 5
+    sleep 30
     
     sudo trace-cmd report > $SAVE_DIR/data_analyze_bitcore_$n.txt
     echo "시스템 콜 데이터는 $SAVE_DIR/data_analyze_bitcore_$n.txt 에 저장되었습니다."

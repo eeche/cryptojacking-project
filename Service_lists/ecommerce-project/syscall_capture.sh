@@ -1,5 +1,5 @@
 #!/bin/bash
-NUM_ITERATIONS=1
+NUM_ITERATIONS=5
 
 docker-compose up -d
 
@@ -8,7 +8,7 @@ docker run -d --name locust_temp \
   locustio/locust \
   -f /mnt/locust/locustfile.py --headless -u 100 -r 10 --run-time 10m --host http://web
 
-sleep 10
+sleep 100
 
 SAVE_DIR=/media/lee/0E2A-EE70/syscall
 mkdir -p $SAVE_DIR
@@ -24,10 +24,10 @@ do
     sudo trace-cmd record -e syscalls &
     TRACE_CMD_PID=$!
 
-    sleep 6
+    sleep 600
 
     sudo kill -SIGINT $TRACE_CMD_PID
-    sleep 5
+    sleep 30
     
     sudo trace-cmd report > $SAVE_DIR/ecommerce_$n.txt
     echo "시스템 콜 데이터는 $SAVE_DIR/ecommerce_$n.txt 에 저장되었습니다."
@@ -50,10 +50,10 @@ do
     sudo trace-cmd record -e syscalls &
     TRACE_CMD_PID=$!
 
-    sleep 6
+    sleep 600
 
     sudo kill -SIGINT $TRACE_CMD_PID
-    sleep 5
+    sleep 30
     
     sudo trace-cmd report > $SAVE_DIR/ecommerce_bytecoin_$n.txt
     echo "시스템 콜 데이터는 $SAVE_DIR/ecommerce_bytecoin_$n.txt 에 저장되었습니다."
@@ -68,10 +68,10 @@ do
     sudo trace-cmd record -e syscalls &
     TRACE_CMD_PID=$!
 
-    sleep 6
+    sleep 600
 
     sudo kill -SIGINT $TRACE_CMD_PID
-    sleep 5
+    sleep 30
     
     sudo trace-cmd report > $SAVE_DIR/ecommerce_bitcore_$n.txt
     echo "시스템 콜 데이터는 $SAVE_DIR/ecommerce_bitcore_$n.txt 에 저장되었습니다."
