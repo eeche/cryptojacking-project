@@ -1,0 +1,13 @@
+sys_enter_recvmsg: 38
+sys_enter_clock_nanosleep: 19
+sys_enter_poll: 9
+sys_enter_futex: 7
+sys_enter_epoll_pwait: 6
+sys_enter_sendto: 6
+sys_enter_nanosleep: 5
+sys_enter_close: 3
+sys_enter_socket: 3
+sys_enter_setsockopt: 3
+sys_enter_connect: 3
+sys_enter_write: 2
+sys_enter_recvfrom: 1

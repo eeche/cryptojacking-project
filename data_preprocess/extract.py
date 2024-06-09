@@ -2,13 +2,13 @@ import re
 import os
 from collections import Counter
 
-# 파일 경로 목록
-file_paths = {
-    'normal': {'data_analyze_1.txt', 'django_1.txt', 'data_analyze_2.txt',
-               },
-    'abnormal': {'data_analyze_bytecoin_1.txt', 'django_byte_1.txt', 'data_analyze_bytecoin_2.txt',
-                 }
+# 디렉토리 경로 목록
+dir_paths = {
+    'normal': 'C:/Users/dlckd/Desktop/cryptoProject/syscall/normal',
+    'abnormal': 'C:/Users/dlckd/Desktop/cryptoProject/syscall/abnormal'
 }
+
+output_base_dir = 'C:/Users/dlckd/Desktop/cryptoProject'
 
 syscall_pattern = re.compile(r'(.*)\[(\d+)\]\s+([\d.]+):\s+(\w+):\s+(.*)')
 
@@ -58,16 +58,22 @@ def enter_syscall_counter(data, base_file_path, label):
             file.write(f'{syscall}: {count}\n')
 
 
-def process_files(file_paths):
-    for label, paths in file_paths.items():
-        output_dir = label
-        os.makedirs(output_dir, exist_ok=True)
-        for path in paths:
-            print(f'Processing file: {path}')
-            data = parse_log_file(path)
-            original_file_name = os.path.basename(path).rsplit('.', 1)[0]
+def process_directory(dir_path, label):
+    output_dir = os.path.join(output_base_dir, label)
+    os.makedirs(output_dir, exist_ok=True)
+    for file_name in os.listdir(dir_path):
+        file_path = os.path.join(dir_path, file_name)
+        if os.path.isfile(file_path):
+            print(f'Processing file: {file_path}')
+            data = parse_log_file(file_path)
+            original_file_name = os.path.basename(file_path).rsplit('.', 1)[0]
             save_split_files(data, output_dir, label, original_file_name)
-            print(f'Completed processing for file: {path}')
+            print(f'Completed processing for file: {file_path}')
 
 
-process_files(file_paths)
+def process_files(dir_paths):
+    for label, dir_path in dir_paths.items():
+        process_directory(dir_path, label)
+
+
+process_files(dir_paths)

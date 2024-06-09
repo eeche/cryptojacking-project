@@ -8,11 +8,11 @@ import numpy as np
 
 # 추출할 시스템 콜 목록
 target_syscalls = [
-    "sys_enter_recvmsg", "sys_enter_futex", "sys_enter_pwrite64", "sys_enter_read", "sys_enter_poll",
-    "sys_enter_write", "sys_enter_epoll_wait", "sys_enter_ioctl", "sys_enter_mprotect", "sys_enter_newfstatat",
-    "sys_enter_madvise", "sys_enter_lseek", "sys_enter_splice", "sys_enter_writev", "sys_enter_close",
-    "sys_enter_openat", "sys_enter_clock_nanosleep", "sys_enter_sendmsg", "sys_enter_mmap", "sys_enter_epoll_pwait",
-    "sys_enter_rt_sigaction", "sys_enter_fcntl", "sys_enter_rt_sigprocmask", "sys_enter_nanosleep", "sys_enter_newstat"
+    "sys_enter_clock_nanosleep", "sys_enter_close", "sys_enter_epoll_pwait", "sys_enter_epoll_wait", "sys_enter_fcntl",
+    "sys_enter_futex", "sys_enter_ioctl", "sys_enter_lseek", "sys_enter_madvise", "sys_enter_mmap", "sys_enter_mprotect",
+    "sys_enter_nanosleep", "sys_enter_newfstatat", "sys_enter_newstat", "sys_enter_openat", "sys_enter_poll",
+    "sys_enter_pwrite64", "sys_enter_read", "sys_enter_recvmsg", "sys_enter_rt_sigaction", "sys_enter_rt_sigprocmask",
+    "sys_enter_sendmsg", "sys_enter_splice", "sys_enter_write", "sys_enter_writev"
 ]
 
 
@@ -80,12 +80,10 @@ def create_frequency_dataframe(syscall_counts_list, target_features):
 # 모델 예측 함수
 
 
-def predict_with_model(df, model_path, scaler_path):
+def predict_with_model(df, model_path):
     model = joblib.load(model_path)
-    scaler = joblib.load(scaler_path)
-    X = scaler.transform(df)
-    predictions = model.predict(X)
-    return predictions, X
+    predictions = model.predict(df)
+    return predictions, df
 
 # 과반수 예측값 및 비율 계산 함수
 
@@ -102,7 +100,6 @@ def majority_vote(predictions):
 if __name__ == "__main__":
     log_file_path = sys.argv[1]
     model_file_path = sys.argv[2]
-    scaler_file_path = sys.argv[3]
 
     # 로그 파일 파싱
     data = parse_log_file(log_file_path)
@@ -115,17 +112,9 @@ if __name__ == "__main__":
         interval_data, target_syscalls) for interval_data in split_data]
     df = create_frequency_dataframe(syscall_counts_list, target_syscalls)
 
-    # 스케일러 적용 전 데이터프레임 출력
-    print("Dataframe before scaling:")
-    print(df)
-
     # 모델 예측
     predictions, scaled_df = predict_with_model(
-        df, model_file_path, scaler_file_path)
-
-    # 스케일러 적용 후 데이터프레임 출력
-    print("Dataframe after scaling:")
-    print(scaled_df)
+        df, model_file_path)
 
     # 과반수 예측값 및 비율 계산
     majority_value, majority_percentage = majority_vote(predictions)
