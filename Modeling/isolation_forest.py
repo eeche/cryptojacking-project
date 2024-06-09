@@ -4,7 +4,7 @@ from sklearn.metrics import classification_report, accuracy_score
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
-data_path = 'C:\\Users\\dlckd\\Desktop\\cryptoProject\\Data\\features_based_time.csv'
+data_path = './Data/features_based_time.csv'
 data = pd.read_csv(data_path)
 
 X = data.iloc[:, :-1]

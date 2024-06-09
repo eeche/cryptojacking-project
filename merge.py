@@ -1,10 +1,8 @@
 import csv
 import pandas as pd
 
-df = pd.read_csv(
-    'C:\\Users\\dlckd\\Desktop\\cryptoProject\\datasets.csv')
-add = pd.read_csv(
-    'C:\\Users\\dlckd\\Desktop\\cryptoProject\\data.csv')
+df = pd.read_csv('./datasets.csv')
+add = pd.read_csv('./data.csv')
 
 merged_dataframe = pd.concat([df, add])
 

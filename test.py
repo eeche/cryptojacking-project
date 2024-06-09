@@ -2,7 +2,7 @@ import re
 from collections import Counter
 
 # 로그 파일 파싱 함수
-file_path = 'C:\\Users\\dlckd\\Desktop\\cryptoProject\\Data\\crypto\\bytecoin.txt'
+file_path = './Data/crypto/bytecoin.txt'
 syscall_pattern = re.compile(r'(.*)\[(\d+)\]\s+([\d.]+):\s+(\w+):\s+(.*)')
 
 

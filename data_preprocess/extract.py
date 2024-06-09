@@ -4,11 +4,11 @@ from collections import Counter
 
 # 디렉토리 경로 목록
 dir_paths = {
-    'normal': 'C:/Users/dlckd/Desktop/cryptoProject/syscall/normal',
-    'abnormal': 'C:/Users/dlckd/Desktop/cryptoProject/syscall/abnormal'
+    'normal': './syscall/normal',
+    'abnormal': './syscall/abnormal'
 }
 
-output_base_dir = 'C:/Users/dlckd/Desktop/cryptoProject'
+output_base_dir = './'
 
 syscall_pattern = re.compile(r'(.*)\[(\d+)\]\s+([\d.]+):\s+(\w+):\s+(.*)')
 
