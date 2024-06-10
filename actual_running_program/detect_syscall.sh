@@ -4,9 +4,7 @@
 CURRENT_TIME=$(date "+%Y%m%d_%H%M%S")
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 LOG_FILE="${SCRIPT_DIR}/${CURRENT_TIME}.txt"
-FREQUENCY_FILE="${LOG_FILE%.txt}_frequency.txt"
-MODEL_FILE="${SCRIPT_DIR}/voting_classifier_model.pkl"
-SCALER_FILE="${SCRIPT_DIR}/scaler.pkl"
+MODEL_FILE="${SCRIPT_DIR}/gbm_model.pkl"
 PYTHON_SCRIPT="${SCRIPT_DIR}/detect_syscall.py"
 VENV_DIR="${SCRIPT_DIR}/venv"
 
@@ -52,7 +50,7 @@ sleep 5
 sudo trace-cmd report > $LOG_FILE
 
 # Python 스크립트 실행
-python3 $PYTHON_SCRIPT $LOG_FILE $MODEL_FILE $SCALER_FILE $FREQUENCY_FILE
+python3 $PYTHON_SCRIPT $LOG_FILE $MODEL_FILE
 
 # 가상 환경 비활성화
 deactivate
