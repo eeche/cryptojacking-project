@@ -4,7 +4,7 @@
 CURRENT_TIME=$(date "+%Y%m%d_%H%M%S")
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 LOG_FILE="${SCRIPT_DIR}/${CURRENT_TIME}.txt"
-MODEL_FILE="${SCRIPT_DIR}/gbm_model.pkl"
+MODEL_FILE="${SCRIPT_DIR}/best_gbm_model.pkl"
 PYTHON_SCRIPT="${SCRIPT_DIR}/detect_syscall.py"
 VENV_DIR="${SCRIPT_DIR}/venv"
 
@@ -37,17 +37,27 @@ install_python_packages() {
 # 필요한 Python 패키지 설치
 install_python_packages
 
+echo -e "\npre-recording..."
+# trace-cmd 실행
+sudo trace-cmd record -e syscalls -o "${SCRIPT_DIR}/trace.dat" & TRACE_CMD_PID=$!
+sleep 60
+sudo kill -SIGINT $TRACE_CMD_PID
+sleep 10
+sudo trace-cmd report > $LOG_FILE
+
+echo -e "\nstart recording..."
 # trace-cmd 실행 (5분간)
 sudo trace-cmd record -e syscalls -o "${SCRIPT_DIR}/trace.dat" & TRACE_CMD_PID=$!
 
 
-sleep 30
+sleep 600
 
 sudo kill -SIGINT $TRACE_CMD_PID
 
-sleep 5
+sleep 30
 # trace-cmd 보고서 생성
 sudo trace-cmd report > $LOG_FILE
+sudo rm -f trace.dat
 
 # Python 스크립트 실행
 python3 $PYTHON_SCRIPT $LOG_FILE $MODEL_FILE
