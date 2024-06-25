@@ -2,20 +2,22 @@ import re
 from collections import Counter
 
 # 로그 파일 파싱 함수
-file_path = './Data/crypto/bytecoin.txt'
+file_path = './Data/blog_1.txt'
 syscall_pattern = re.compile(r'(.*)\[(\d+)\]\s+([\d.]+):\s+(\w+):\s+(.*)')
 
 
 def parse_log_file(file_path):
     data = []
+    processes = []
     with open(file_path, 'r') as file:
         for line in file:
             match = syscall_pattern.search(line)
             if match:
                 process, cpu, timestamp, syscall, args = match.groups()
-                if 'trace-cmd' not in process:
+                if 'trace-cmd' not in process and 'locust' not in process:
                     data.append(syscall)
-    return data
+                    processes.append(process)
+    return data, processes
 
 
 def enter_syscall_counter(data):
@@ -28,32 +30,15 @@ def enter_syscall_counter(data):
             file.write(f'{syscall}: {count}\n')
 
 
-def generate_3grams(data):
-    n = 3
-    return [tuple(data[i:i+n]) for i in range(len(data)-n+1)]
-
-
-def save_3grams_to_file(data):
-    three_grams = generate_3grams(data)
+def process_counter(processes):
+    process_counter = Counter(processes)
+    sorted_processes = process_counter.most_common()
     base_file_path = file_path.rsplit('.', 1)[0]
-    with open(f'{base_file_path}_3grams.txt', 'w', encoding='utf-8') as file:
-        for three_gram in three_grams:
-            three_gram_str = ' '.join(three_gram)
-            file.write(f'{three_gram_str}\n')
+    with open(f'{base_file_path}_process_frequency.txt', 'w') as file:
+        for process, count in sorted_processes:
+            file.write(f'{process}: {count}\n')
 
 
-def save_3gram_frequencies(data):
-    three_grams = generate_3grams(data)
-    three_gram_counter = Counter(three_grams)
-    sorted_three_grams = three_gram_counter.most_common()
-    base_file_path = file_path.rsplit('.', 1)[0]
-    with open(f'{base_file_path}_3gram_frequency.txt', 'w', encoding='utf-8') as file:
-        for three_gram, count in sorted_three_grams:
-            three_gram_str = ' '.join(three_gram)
-            file.write(f'{three_gram_str}: {count}\n')
-
-
-data = parse_log_file(file_path)
+data, processes = parse_log_file(file_path)
 enter_syscall_counter(data)
-save_3grams_to_file(data)
-save_3gram_frequencies(data)
+process_counter(processes)
