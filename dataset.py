@@ -48,51 +48,6 @@ data2 = {
     'sys_enter_clock_nanosleep': 11832,
 }
 
-# data1 = {
-#     'sys_enter_futex sys_exit_futex sys_enter_futex': 62921,
-#     'sys_enter_openat sys_exit_openat sys_enter_newfstat': 38338,
-#     'sys_enter_close sys_exit_close sys_enter_openat': 34653,
-#     'sys_enter_rt_sigaction sys_exit_rt_sigaction sys_enter_rt_sigaction': 33485,
-#     'sys_enter_newfstat sys_exit_newfstat sys_enter_close': 25833,
-#     'sys_enter_read sys_exit_read sys_enter_read': 20132,
-#     'sys_enter_nanosleep sys_exit_nanosleep sys_enter_nanosleep': 15937,
-#     'sys_enter_newfstat sys_exit_newfstat sys_enter_read': 15872,
-#     'sys_enter_read sys_exit_read sys_enter_close': 15641,
-#     'sys_enter_futex sys_exit_futex sys_exit_futex': 13651,
-#     'sys_enter_getgid sys_exit_getgid sys_enter_getegid': 13148,
-#     'sys_enter_geteuid sys_exit_geteuid sys_enter_getgid': 13125,
-#     'sys_enter_futex sys_enter_futex sys_exit_futex': 13075,
-#     'sys_enter_getegid sys_exit_getegid sys_enter_prctl': 12830,
-#     'sys_enter_getuid sys_exit_getuid sys_enter_geteuid': 12709,
-#     'sys_enter_prctl sys_exit_prctl sys_enter_newfstatat': 11894,
-#     'sys_enter_close sys_exit_close sys_enter_close': 11579,
-#     'sys_enter_epoll_pwait sys_exit_epoll_pwait sys_enter_epoll_pwait': 11514,
-#     'sys_enter_fcntl sys_exit_fcntl sys_enter_fcntl': 11391,
-#     'sys_enter_prctl sys_exit_prctl sys_enter_prctl': 11257,
-# }
-
-# data2 = {
-#     'sys_enter_pwrite64 sys_exit_pwrite64 sys_enter_pwrite64': 80777,
-#     'sys_enter_futex sys_exit_futex sys_enter_futex': 45820,
-#     'sys_enter_recvmsg sys_exit_recvmsg sys_enter_recvmsg': 44871,
-#     'sys_enter_ioctl sys_exit_ioctl sys_enter_ioctl': 38534,
-#     'sys_enter_madvise sys_exit_madvise sys_enter_madvise': 37183,
-#     'sys_enter_mprotect sys_exit_mprotect sys_enter_mprotect': 24508,
-#     'sys_enter_poll sys_exit_poll sys_enter_read': 23073,
-#     'sys_enter_recvmsg sys_exit_recvmsg sys_enter_clock_nanosleep': 22647,
-#     'sys_enter_splice sys_exit_splice sys_enter_splice': 22352,
-#     'sys_enter_lseek sys_exit_lseek sys_enter_writev': 19834,
-#     'sys_enter_write sys_exit_write sys_enter_poll': 16440,
-#     'sys_enter_recvmsg sys_exit_recvmsg sys_enter_poll': 15924,
-#     'sys_enter_openat sys_exit_openat sys_enter_newfstatat': 13991,
-#     'sys_enter_pwrite64 sys_exit_pwrite64 sys_enter_lseek': 13896,
-#     'sys_enter_writev sys_exit_writev sys_enter_pwrite64': 13846,
-#     'sys_enter_newfstatat sys_exit_newfstatat sys_enter_newfstatat': 13368,
-#     'sys_enter_epoll_wait sys_exit_epoll_wait sys_enter_recvmsg': 13283,
-#     'sys_enter_write sys_exit_write sys_enter_lseek': 13036,
-#     'sys_enter_mmap sys_exit_mmap sys_enter_mmap': 12408,
-#     'sys_enter_write sys_exit_write sys_enter_write': 12264,
-# }
 # 데이터프레임 생성
 df1 = pd.DataFrame([data1])
 df2 = pd.DataFrame([data2])

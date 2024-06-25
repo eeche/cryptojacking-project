@@ -14,7 +14,7 @@ def parse_log_file(file_path):
             match = syscall_pattern.search(line)
             if match:
                 process, cpu, timestamp, syscall, args = match.groups()
-                if 'trace-cmd' not in process and 'locust' not in process:
+                if 'trace-cmd' not in process:
                     data.append(syscall)
                     processes.append(process)
     return data, processes

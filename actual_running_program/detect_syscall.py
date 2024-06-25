@@ -27,7 +27,7 @@ def parse_log_file(file_path):
             match = syscall_pattern.search(line)
             if match:
                 process, cpu, timestamp, syscall, args = match.groups()
-                if 'trace-cmd' not in process:
+                if 'trace-cmd' not in process and 'locust' not in process:
                     timestamp = float(timestamp)  # 타임스탬프를 float으로 변환
                     data.append((timestamp, syscall))
     return data
