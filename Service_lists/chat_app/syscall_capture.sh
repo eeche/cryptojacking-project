@@ -10,7 +10,7 @@ docker run -d --name locust_chat \
 
 sleep 100
 
-SAVE_DIR=/media/lee/0E2A-EE70/syscall
+SAVE_DIR=/media/eeche/0E2A-EE70/syscall
 mkdir -p $SAVE_DIR
 
 sudo trace-cmd record -e syscalls &
