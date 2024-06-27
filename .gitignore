@@ -1,3 +1,2 @@
 actual_running_program/*.txt
-blockchain_auth
-car_communication
+Service_lists/chat_app/mongodb/
