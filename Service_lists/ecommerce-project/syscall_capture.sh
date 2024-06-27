@@ -73,8 +73,8 @@ do
     sudo kill -SIGINT $TRACE_CMD_PID
     sleep 30
     
-    sudo trace-cmd report > $SAVE_DIR/ecommerce_bitcore_$n.txt
-    echo "시스템 콜 데이터는 $SAVE_DIR/ecommerce_bitcore_$n.txt 에 저장되었습니다."
+    sudo trace-cmd report > $SAVE_DIR/ecommerce_dashcoin_$n.txt
+    echo "시스템 콜 데이터는 $SAVE_DIR/ecommerce_dashcoin_$n.txt 에 저장되었습니다."
     sleep 10
 done
 

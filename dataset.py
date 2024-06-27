@@ -1,7 +1,7 @@
 import pandas as pd
 # 크립토재킹하는 컨테이너 시스템 콜 상위 20개 조사해서 빈도수 확인하기 위해 시스템콜 리스트 뽑기
 # 첫 번째 파일의 데이터
-data1 = {
+bytecoin = {
     'sys_enter_recvmsg': 129799,
     'sys_enter_futex': 126108,
     'sys_enter_pwrite64': 104156,
@@ -21,11 +21,11 @@ data1 = {
     'sys_enter_clock_nanosleep': 23512,
     'sys_enter_sendmsg': 22506,
     'sys_enter_mmap': 21383,
-    'sys_enter_epoll_pwait': 14512,
+    'sys_enter_epoll_pwait': 14512
 }
 
 # 두 번째 파일의 데이터
-data2 = {
+dashcoin = {
     'sys_enter_read': 118408,
     'sys_enter_futex': 102676,
     'sys_enter_poll': 56293,
@@ -45,15 +45,40 @@ data2 = {
     'sys_enter_nanosleep': 19658,
     'sys_enter_splice': 19315,
     'sys_enter_newstat': 16640,
-    'sys_enter_clock_nanosleep': 11832,
+    'sys_enter_clock_nanosleep': 11832
 }
 
+dogecoin = {
+    'sys_enter_times': 52256,
+    'sys_enter_ioctl': 43440,
+    'sys_enter_epoll_pwait': 21573,
+    'sys_enter_poll': 15540,
+    'sys_enter_read': 14222,
+    'sys_enter_recvmsg': 13918,
+    'sys_enter_futex': 13116,
+    'sys_enter_newfstatat': 8174,
+    'sys_enter_close': 7935,
+    'sys_enter_openat': 6453,
+    'sys_enter_inotify_add_watch': 5700,
+    'sys_enter_nanosleep': 4377,
+    'sys_enter_epoll_wait': 3822,
+    'sys_enter_gettid': 3223,
+    'sys_enter_timerfd_settime': 2839,
+    'sys_enter_readlink': 2186,
+    'sys_enter_madvise': 2010,
+    'sys_enter_socket': 1583,
+    'sys_enter_sched_yield': 1481,
+    'sys_enter_write': 1310,
+}
+
+
 # 데이터프레임 생성
-df1 = pd.DataFrame([data1])
-df2 = pd.DataFrame([data2])
+df1 = pd.DataFrame([bytecoin])
+df2 = pd.DataFrame([dashcoin])
+df3 = pd.DataFrame([dogecoin])
 
 # 데이터프레임 결합
-combined_df = pd.concat([df1, df2], ignore_index=True)
+combined_df = pd.concat([df1, df2, df3], ignore_index=True)
 
 # CSV 파일로 저장
 combined_df.to_csv('combined_syscalls.csv', index=False)

@@ -2,7 +2,8 @@ import re
 from collections import Counter
 
 # 로그 파일 파싱 함수
-file_path = '/media/eeche/0E2A-EE70/syscall/test_doge.txt'
+# file_path = '/media/eeche/0E2A-EE70/syscall/test_doge.txt'
+file_path = './Data/bytecoin.txt'
 syscall_pattern = re.compile(r'(.*)\[(\d+)\]\s+([\d.]+):\s+(\w+):\s+(.*)')
 
 
@@ -30,15 +31,15 @@ def enter_syscall_counter(data):
             file.write(f'{syscall}: {count}\n')
 
 
-def process_counter(processes):
-    process_counter = Counter(processes)
-    sorted_processes = process_counter.most_common()
-    base_file_path = file_path.rsplit('.', 1)[0]
-    with open(f'{base_file_path}_process_frequency.txt', 'w') as file:
-        for process, count in sorted_processes:
-            file.write(f'{process}: {count}\n')
+# def process_counter(processes):
+#     process_counter = Counter(processes)
+#     sorted_processes = process_counter.most_common()
+#     base_file_path = file_path.rsplit('.', 1)[0]
+#     with open(f'{base_file_path}_process_frequency.txt', 'w') as file:
+#         for process, count in sorted_processes:
+#             file.write(f'{process}: {count}\n')
 
 
 data, processes = parse_log_file(file_path)
 enter_syscall_counter(data)
-process_counter(processes)
+# process_counter(processes)
