@@ -71,14 +71,37 @@ dogecoin = {
     'sys_enter_write': 1310,
 }
 
+monero = {
+    'sys_enter_sched_yield': 185332,
+    'sys_enter_times': 51812,
+    'sys_enter_ioctl': 47491,
+    'sys_enter_poll': 31957,
+    'sys_enter_read': 30262,
+    'sys_enter_recvmsg': 20939,
+    'sys_enter_newfstatat': 15059,
+    'sys_enter_close': 13984,
+    'sys_enter_openat': 13349,
+    'sys_enter_write': 11754,
+    'sys_enter_futex': 8947,
+    'sys_enter_epoll_pwait': 6529,
+    'sys_enter_epoll_wait': 5114,
+    'sys_enter_inotify_add_watch': 5102,
+    'sys_enter_nanosleep': 3385,
+    'sys_enter_gettid': 3266,
+    'sys_enter_sendmsg': 3240,
+    'sys_enter_timerfd_settime': 2845,
+    'sys_enter_access': 2389,
+    'sys_enter_readlink': 2187
+}
 
 # 데이터프레임 생성
 df1 = pd.DataFrame([bytecoin])
 df2 = pd.DataFrame([dashcoin])
 df3 = pd.DataFrame([dogecoin])
+df4 = pd.DataFrame([monero])
 
 # 데이터프레임 결합
-combined_df = pd.concat([df1, df2, df3], ignore_index=True)
+combined_df = pd.concat([df1, df2, df3, df4], ignore_index=True)
 
 # CSV 파일로 저장
 combined_df.to_csv('combined_syscalls.csv', index=False)
