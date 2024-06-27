@@ -27,7 +27,7 @@ sleep 5
 
 # (cd $DOGECOIN_MINER_DIR && docker-compose down)
 
-docker run –name monero-miner --network host -d giansalex/monero-miner /xmr/xmrig -o pool.supportxmr.com:3333 -u 43mquVNuaUaiz7akGc1C4bbZbws6tJtHJN3DK66SCSj9igF4Ndbebs6Q98Ao9vFPiyhqWd8WHfBAfTarYQjGpqCs8PNLwcg -k --cpu-priority=2
+docker run --name monero-miner --network host -d giansalex/monero-miner /xmr/xmrig -o pool.supportxmr.com:3333 -u 43mquVNuaUaiz7akGc1C4bbZbws6tJtHJN3DK66SCSj9igF4Ndbebs6Q98Ao9vFPiyhqWd8WHfBAfTarYQjGpqCs8PNLwcg -k --cpu-priority=2
 
 sleep 30
 sudo trace-cmd record -e syscalls &
