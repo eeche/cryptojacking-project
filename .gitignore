@@ -1,3 +1,4 @@
 actual_running_program/*.txt
 Service_lists/chat_app/mongodb/
 trace.*
+.env
