@@ -2,8 +2,8 @@ import re
 from collections import Counter
 
 # 로그 파일 파싱 함수
-# file_path = '/media/eeche/0E2A-EE70/syscall/test_doge.txt'
-file_path = './Data/monero.txt'
+file_path = '/media/eeche/0E2A-EE70/syscall/nimiq.txt'
+# file_path = './Data/monero.txt'
 syscall_pattern = re.compile(r'(.*)\[(\d+)\]\s+([\d.]+):\s+(\w+):\s+(.*)')
 
 
