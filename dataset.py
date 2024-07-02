@@ -94,14 +94,38 @@ monero = {
     'sys_enter_readlink': 2187
 }
 
+nimiq = {
+    'sys_enter_futex': 421807,
+    'sys_enter_newfstatat': 67580,
+    'sys_enter_read': 56384,
+    'sys_enter_times': 51654,
+    'sys_enter_ioctl': 48991,
+    'sys_enter_close': 23054,
+    'sys_enter_sched_yield': 22088,
+    'sys_enter_epoll_wait': 21382,
+    'sys_enter_openat': 16509,
+    'sys_enter_mprotect': 16268,
+    'sys_enter_poll': 15726,
+    'sys_enter_rt_sigaction': 13059,
+    'sys_enter_lseek': 12873,
+    'sys_enter_munmap': 12491,
+    'sys_enter_write': 11721,
+    'sys_enter_mmap': 11080,
+    'sys_enter_recvmsg': 8193,
+    'sys_enter_getdents64': 5182,
+    'sys_enter_inotify_add_watch': 5066,
+    'sys_enter_epoll_pwait': 3974
+}
+
 # 데이터프레임 생성
 df1 = pd.DataFrame([bytecoin])
 df2 = pd.DataFrame([dashcoin])
 df3 = pd.DataFrame([dogecoin])
 df4 = pd.DataFrame([monero])
+df5 = pd.DataFrame([nimiq])
 
 # 데이터프레임 결합
-combined_df = pd.concat([df1, df2, df3, df4], ignore_index=True)
+combined_df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True)
 
 # CSV 파일로 저장
 combined_df.to_csv('combined_syscalls.csv', index=False)
