@@ -1,0 +1,35 @@
+{
+    "pools": [
+        {
+            "url": "rx.unmineable.com:3333",
+            "user": "DOGE:도지코인출금계좌.worker명칭#d6tu-vdqb",
+            "pass": "x",
+            "tls": false
+        }
+    ],
+    "cpu": {
+        "enabled": true,
+        "threads": null,
+        "priority": null,
+        "memory-pools": {
+            "enabled": true,
+            "size": 2048
+        }
+    },
+    "donate-level": 1,
+    "log-file": null,
+    "print-time": 60,
+    "pools": [
+        {
+            "url": "rx.unmineable.com:3333",
+            "user": "DOGE:도지코인출금계좌.worker명칭#d6tu-vdqb",
+            "pass": "x"
+        }
+    ],
+    "retries": 5,
+    "retry-time": 10,
+    "max-retries": 100,
+    "socks5": null,
+    "self-select": null,
+    "submit-to-origin": false
+}
