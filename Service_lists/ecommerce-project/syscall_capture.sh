@@ -19,7 +19,7 @@ sleep 10
 sudo kill -SIGINT $TRACE_CMD_PID
 sleep 5
 
-for ((n=1; n<=NUM_ITERATIONS; n++))
+for ((n=1; n<=25; n++))
 do
     sudo trace-cmd record -e syscalls &
     TRACE_CMD_PID=$!
