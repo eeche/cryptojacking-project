@@ -3,6 +3,8 @@
 # 기본 이미지를 지정합니다. 여기에 적절한 Linux 이미지를 사용할 수 있습니다.
 FROM ubuntu:20.04
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # 패키지 업데이트 및 필수 패키지 설치
 RUN apt-get update && \
     apt-get install -y \
@@ -11,6 +13,7 @@ RUN apt-get update && \
     cmake \
     libhwloc-dev \
     libssl-dev \
+    tzdata \
     && rm -rf /var/lib/apt/lists/*
 
 # XMRig 소스코드 다운로드 및 빌드
