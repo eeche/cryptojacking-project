@@ -148,4 +148,4 @@ done
 sudo aa-remove-unknown
 docker-compose down
 docker rm -f locust_temp
-docker rm -f miniq-miner
+docker rm -f nimiq-miner
