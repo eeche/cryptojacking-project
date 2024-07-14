@@ -2,5 +2,5 @@ actual_running_program/*.txt
 Service_lists/chat_app/mongodb/
 trace.*
 .env
-Service_lists/*.sh
+Service_lists/**/*.sh
 test.sh
