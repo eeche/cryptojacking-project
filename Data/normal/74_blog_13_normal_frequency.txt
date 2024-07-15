@@ -1,0 +1,5 @@
+sys_enter_poll: 12
+sys_enter_ioctl: 11
+sys_enter_recvmsg: 11
+sys_enter_write: 11
+sys_enter_read: 11

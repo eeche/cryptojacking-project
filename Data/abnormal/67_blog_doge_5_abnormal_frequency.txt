@@ -1,0 +1,9 @@
+sys_enter_times: 342
+sys_enter_poll: 86
+sys_enter_inotify_add_watch: 42
+sys_enter_futex: 19
+sys_enter_nanosleep: 9
+sys_enter_pselect6: 6
+sys_enter_write: 3
+sys_enter_newfstatat: 2
+sys_enter_read: 1

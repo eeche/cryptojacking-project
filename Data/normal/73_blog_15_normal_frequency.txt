@@ -1,0 +1,4 @@
+sys_enter_times: 68
+sys_enter_recvmsg: 46
+sys_enter_poll: 22
+sys_enter_futex: 3

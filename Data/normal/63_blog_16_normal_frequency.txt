@@ -1,0 +1,3 @@
+sys_enter_times: 8
+sys_enter_recvmsg: 6
+sys_enter_poll: 2

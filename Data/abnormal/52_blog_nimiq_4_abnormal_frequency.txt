@@ -1,0 +1,5 @@
+sys_enter_futex: 94
+sys_enter_write: 34
+sys_enter_epoll_pwait: 24
+sys_enter_poll: 2
+sys_enter_read: 1

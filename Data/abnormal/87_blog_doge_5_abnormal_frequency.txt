@@ -1,0 +1,12 @@
+sys_enter_times: 173
+sys_enter_poll: 46
+sys_enter_inotify_add_watch: 23
+sys_enter_futex: 6
+sys_enter_recvmsg: 6
+sys_enter_epoll_wait: 5
+sys_enter_sendto: 2
+sys_enter_nanosleep: 1
+sys_enter_read: 1
+sys_enter_socket: 1
+sys_enter_bind: 1
+sys_enter_getsockname: 1

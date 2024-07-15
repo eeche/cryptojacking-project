@@ -1,0 +1,11 @@
+sys_enter_futex: 38
+sys_enter_nanosleep: 28
+sys_enter_poll: 13
+sys_enter_epoll_pwait: 12
+sys_enter_recvmsg: 3
+sys_enter_read: 2
+sys_enter_write: 2
+sys_enter_epoll_wait: 1
+sys_enter_getpid: 1
+sys_enter_tgkill: 1
+sys_enter_clock_nanosleep: 1

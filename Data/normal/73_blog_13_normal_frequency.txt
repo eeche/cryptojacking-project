@@ -1,0 +1,15 @@
+sys_enter_epoll_pwait: 59
+sys_enter_nanosleep: 6
+sys_enter_futex: 6
+sys_enter_poll: 4
+sys_enter_inotify_add_watch: 3
+sys_enter_write: 2
+sys_enter_readlink: 2
+sys_enter_newfstatat: 2
+sys_enter_syslog: 1
+sys_enter_pselect6: 1
+sys_enter_recvmsg: 1
+sys_enter_timerfd_create: 1
+sys_enter_timerfd_settime: 1
+sys_enter_close: 1
+sys_enter_read: 1

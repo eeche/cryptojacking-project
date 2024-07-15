@@ -1,0 +1,6 @@
+sys_enter_futex: 439
+sys_enter_epoll_pwait: 26
+sys_enter_epoll_ctl: 18
+sys_enter_read: 8
+sys_enter_nanosleep: 4
+sys_enter_write: 4

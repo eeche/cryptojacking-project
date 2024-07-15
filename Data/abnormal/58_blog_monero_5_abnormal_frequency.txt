@@ -1,0 +1,4 @@
+sys_enter_sched_yield: 115
+sys_enter_epoll_pwait: 6
+sys_enter_futex: 3
+sys_enter_nanosleep: 2
