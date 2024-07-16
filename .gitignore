@@ -5,3 +5,5 @@ trace.*
 Service_lists/**/*.sh
 test.sh
 syscall/
+Data/syscall_frequency/
+Data/syscall_lists/
