@@ -7,3 +7,4 @@ test.sh
 syscall/
 Data/syscall_frequency/
 Data/syscall_lists/
+venv
