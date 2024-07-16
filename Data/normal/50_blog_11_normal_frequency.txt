@@ -1,0 +1,11 @@
+sys_enter_nanosleep: 24
+sys_enter_times: 22
+sys_enter_futex: 19
+sys_enter_poll: 14
+sys_enter_epoll_pwait: 11
+sys_enter_write: 11
+sys_enter_read: 11
+sys_enter_recvmsg: 8
+sys_enter_pselect6: 7
+sys_enter_inotify_add_watch: 6
+sys_enter_ioctl: 2

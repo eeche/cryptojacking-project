@@ -5,7 +5,7 @@ import joblib
 import pandas as pd
 
 # 데이터 로드
-data_path = './Data/features_based_time.csv'
+data_path = './Data/test.csv'
 data = pd.read_csv(data_path)
 
 # 특성과 레이블 분리
@@ -45,6 +45,13 @@ print(f"Best cross-validation score: {grid_search.best_score_}")
 
 # 최적의 모델로 예측 수행
 best_model = grid_search.best_estimator_
+
+# best_hyperparameters = {'learning_rate': 0.1, 'max_depth': 5, 'min_samples_leaf': 4,
+#                         'min_samples_split': 10, 'n_estimators': 300, 'subsample': 0.8}
+# best_model = GradientBoostingClassifier(
+#     **best_hyperparameters, random_state=42)
+# best_model.fit(X_train, y_train)
+
 y_pred = best_model.predict(X_test)
 
 print(f"정확도: {accuracy_score(y_test, y_pred) * 100: .2f}%")

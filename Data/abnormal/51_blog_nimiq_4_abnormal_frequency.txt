@@ -1,0 +1,8 @@
+sys_enter_futex: 101
+sys_enter_write: 34
+sys_enter_epoll_pwait: 26
+sys_enter_inotify_add_watch: 5
+sys_enter_getpid: 1
+sys_enter_tgkill: 1
+sys_enter_poll: 1
+sys_enter_read: 1

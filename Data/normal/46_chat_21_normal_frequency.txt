@@ -1,0 +1,7 @@
+sys_enter_futex: 123
+sys_enter_times: 21
+sys_enter_nanosleep: 6
+sys_enter_poll: 6
+sys_enter_inotify_add_watch: 2
+sys_enter_pselect6: 2
+sys_enter_recvfrom: 1

@@ -1,0 +1,9 @@
+sys_enter_recvmsg: 177
+sys_enter_times: 152
+sys_enter_poll: 136
+sys_enter_write: 93
+sys_enter_read: 84
+sys_enter_ioctl: 75
+sys_enter_inotify_add_watch: 19
+sys_enter_pselect6: 4
+sys_enter_newfstatat: 2

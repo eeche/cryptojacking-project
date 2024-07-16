@@ -1,0 +1,7 @@
+sys_enter_write: 79
+sys_enter_poll: 74
+sys_enter_read: 67
+sys_enter_ioctl: 57
+sys_enter_recvmsg: 57
+sys_enter_futex: 2
+sys_enter_sendto: 1

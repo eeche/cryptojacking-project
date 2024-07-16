@@ -1,0 +1,6 @@
+sys_enter_futex: 35
+sys_enter_nanosleep: 14
+sys_enter_poll: 13
+sys_enter_write: 4
+sys_enter_recvmsg: 2
+sys_enter_madvise: 1

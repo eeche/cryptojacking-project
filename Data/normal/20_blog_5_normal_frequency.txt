@@ -1,0 +1,10 @@
+sys_enter_splice: 370
+sys_enter_futex: 15
+sys_enter_epoll_pwait: 14
+sys_enter_times: 12
+sys_enter_poll: 4
+sys_enter_recvmsg: 3
+sys_enter_nanosleep: 3
+sys_enter_inotify_add_watch: 2
+sys_enter_pselect6: 2
+sys_enter_read: 1

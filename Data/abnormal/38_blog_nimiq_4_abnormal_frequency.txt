@@ -1,0 +1,15 @@
+sys_enter_sched_yield: 277
+sys_enter_epoll_wait: 267
+sys_enter_futex: 244
+sys_enter_read: 197
+sys_enter_write: 118
+sys_enter_recvmsg: 106
+sys_enter_poll: 97
+sys_enter_times: 80
+sys_enter_ioctl: 56
+sys_enter_madvise: 6
+sys_enter_mprotect: 5
+sys_enter_epoll_pwait: 3
+sys_enter_pselect6: 2
+sys_enter_newfstatat: 2
+sys_enter_nanosleep: 1

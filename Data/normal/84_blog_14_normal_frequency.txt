@@ -1,0 +1,11 @@
+sys_enter_write: 49
+sys_enter_poll: 48
+sys_enter_read: 42
+sys_enter_recvmsg: 39
+sys_enter_ioctl: 33
+sys_enter_access: 22
+sys_enter_times: 9
+sys_enter_futex: 6
+sys_enter_sendto: 3
+sys_enter_close: 1
+sys_enter_recvfrom: 1

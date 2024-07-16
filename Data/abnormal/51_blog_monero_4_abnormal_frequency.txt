@@ -1,0 +1,5 @@
+sys_enter_read: 2
+sys_enter_sched_yield: 1
+sys_enter_openat: 1
+sys_enter_newfstatat: 1
+sys_enter_ioctl: 1

@@ -1,0 +1,6 @@
+sys_enter_times: 96
+sys_enter_recvmsg: 68
+sys_enter_poll: 34
+sys_enter_futex: 14
+sys_enter_inotify_add_watch: 6
+sys_enter_madvise: 1
