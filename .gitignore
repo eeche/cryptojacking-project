@@ -4,3 +4,4 @@ trace.*
 .env
 Service_lists/**/*.sh
 test.sh
+syscall/
