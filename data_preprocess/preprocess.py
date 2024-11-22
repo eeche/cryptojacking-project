@@ -2,25 +2,101 @@ import os
 import pandas as pd
 
 # 파일 경로 목록
-file_dirs = {
-    'normal': {
-        'frequency':
-            'normal'
-    },
-    'abnormal': {
-        'frequency':
-            'abnormal'
-    }
-}
+file_dirs = {"normal": {"frequency": "normal"}, "abnormal": {"frequency": "abnormal"}}
 
 # 추출할 시스템 콜 목록
+
 target_syscalls = [
-    "sys_enter_recvmsg", "sys_enter_futex", "sys_enter_pwrite64", "sys_enter_read", "sys_enter_poll",
-    "sys_enter_write", "sys_enter_epoll_wait", "sys_enter_ioctl", "sys_enter_mprotect", "sys_enter_newfstatat",
-    "sys_enter_madvise", "sys_enter_lseek", "sys_enter_splice", "sys_enter_writev", "sys_enter_close",
-    "sys_enter_openat", "sys_enter_clock_nanosleep", "sys_enter_sendmsg", "sys_enter_mmap", "sys_enter_epoll_pwait",
-    "sys_enter_rt_sigaction", "sys_enter_fcntl", "sys_enter_rt_sigprocmask", "sys_enter_nanosleep", "sys_enter_newstat"
+    "sys_enter_recvmsg",
+    "sys_enter_futex",
+    "sys_enter_pwrite64",
+    "sys_enter_read",
+    "sys_enter_poll",
+    "sys_enter_write",
+    "sys_enter_epoll_wait",
+    "sys_enter_ioctl",
+    "sys_enter_mprotect",
+    "sys_enter_newfstatat",
+    "sys_enter_madvise",
+    "sys_enter_lseek",
+    "sys_enter_splice",
+    "sys_enter_writev",
+    "sys_enter_close",
+    "sys_enter_openat",
+    "sys_enter_clock_nanosleep",
+    "sys_enter_sendmsg",
+    "sys_enter_mmap",
+    "sys_enter_epoll_pwait",
+    "sys_enter_rt_sigaction",
+    "sys_enter_fcntl",
+    "sys_enter_rt_sigprocmask",
+    "sys_enter_nanosleep",
+    "sys_enter_newstat",
+    "sys_enter_times",
+    "sys_enter_inotify_add_watch",
+    "sys_enter_gettid",
+    "sys_enter_timerfd_settime",
+    "sys_enter_readlink",
+    "sys_enter_socket",
+    "sys_enter_sched_yield",
+    "sys_enter_access",
+    "sys_enter_munmap",
+    "sys_enter_getdents64",
 ]
+
+# 2개 이상 겹치는 데이터만 피처로
+# target_syscalls = [
+#     "sys_enter_recvmsg",
+#     "sys_enter_futex",
+#     "sys_enter_read",
+#     "sys_enter_poll",
+#     "sys_enter_write",
+#     "sys_enter_epoll_wait",
+#     "sys_enter_ioctl",
+#     "sys_enter_mprotect",
+#     "sys_enter_newfstatat",
+#     "sys_enter_madvise",
+#     "sys_enter_lseek",
+#     "sys_enter_splice",
+#     "sys_enter_close",
+#     "sys_enter_openat",
+#     "sys_enter_clock_nanosleep",
+#     "sys_enter_sendmsg",
+#     "sys_enter_mmap",
+#     "sys_enter_epoll_pwait",
+#     "sys_enter_rt_sigaction",
+#     "sys_enter_nanosleep",
+#     "sys_enter_times",
+#     "sys_enter_inotify_add_watch",
+#     "sys_enter_gettid",
+#     "sys_enter_timerfd_settime",
+#     "sys_enter_readlink",
+#     "sys_enter_sched_yield",
+# ]
+
+
+# 3개 이상 겹치는 데이터만 피처로
+# target_syscalls = [
+#     "sys_enter_recvmsg",
+#     "sys_enter_futex",
+#     "sys_enter_read",
+#     "sys_enter_poll",
+#     "sys_enter_write",
+#     "sys_enter_epoll_wait",
+#     "sys_enter_ioctl",
+#     "sys_enter_mprotect",
+#     "sys_enter_newfstatat",
+#     "sys_enter_madvise",
+#     "sys_enter_close",
+#     "sys_enter_openat",
+#     "sys_enter_mmap",
+#     "sys_enter_epoll_pwait",
+#     "sys_enter_rt_sigaction",
+#     "sys_enter_nanosleep",
+#     "sys_enter_times",
+#     "sys_enter_inotify_add_watch",
+#     "sys_enter_sched_yield",
+# ]
 
 
 def get_file_list(directory, suffix):
@@ -33,23 +109,21 @@ def get_file_list(directory, suffix):
 
 
 def extract_target_features(file_path, target_features):
-    df = pd.read_csv(file_path, sep=':', header=None,
-                     names=['feature', 'frequency'])
-    filtered_features = df[df['feature'].isin(target_features)]
+    df = pd.read_csv(file_path, sep=":", header=None, names=["feature", "frequency"])
+    filtered_features = df[df["feature"].isin(target_features)]
     return filtered_features, df
 
 
 def prepare_individual_data(dirs, label, target_features):
     all_data = []
     original_data = {}
-    suffix = '_frequency.txt'
-    files = get_file_list(dirs['frequency'], suffix)
+    suffix = "_frequency.txt"
+    files = get_file_list(dirs["frequency"], suffix)
     for file in files:
-        print(f'Processing file: {file}')
-        target_feature_data, full_data = extract_target_features(
-            file, target_features)
-        target_feature_data['label'] = label
-        target_feature_data['file'] = file
+        print(f"Processing file: {file}")
+        target_feature_data, full_data = extract_target_features(file, target_features)
+        target_feature_data["label"] = label
+        target_feature_data["file"] = file
         all_data.append(target_feature_data)
         original_data[file] = full_data
     return pd.concat(all_data, ignore_index=True), original_data
@@ -57,20 +131,22 @@ def prepare_individual_data(dirs, label, target_features):
 
 # 정상 및 비정상 데이터 준비
 normal_freq_data, normal_freq_full = prepare_individual_data(
-    file_dirs['normal'], label=0, target_features=target_syscalls)
+    file_dirs["normal"], label=0, target_features=target_syscalls
+)
 abnormal_freq_data, abnormal_freq_full = prepare_individual_data(
-    file_dirs['abnormal'], label=1, target_features=target_syscalls)
+    file_dirs["abnormal"], label=1, target_features=target_syscalls
+)
 
 # 데이터 통합
-all_freq_data = pd.concat(
-    [normal_freq_data, abnormal_freq_data], ignore_index=True)
+all_freq_data = pd.concat([normal_freq_data, abnormal_freq_data], ignore_index=True)
 full_data = {**normal_freq_full, **abnormal_freq_full}
 
 
 def create_feature_vector(df):
     feature_vector = df.pivot_table(
-        index='file', columns='feature', values='frequency', fill_value=0)
-    feature_vector['label'] = df.groupby('file')['label'].first()
+        index="file", columns="feature", values="frequency", fill_value=0
+    )
+    feature_vector["label"] = df.groupby("file")["label"].first()
     return feature_vector
 
 
@@ -84,21 +160,42 @@ def correct_zeros(df, original_data):
         if file in original_data:
             original_file_data = original_data[file]
             for feature in df.columns:
-                if feature != 'label' and df.at[index, feature] == 0:
-                    if feature in original_file_data['feature'].values:
-                        actual_value = original_file_data[original_file_data['feature']
-                                                          == feature]['frequency'].values[0]
+                if feature != "label" and df.at[index, feature] == 0:
+                    if feature in original_file_data["feature"].values:
+                        actual_value = original_file_data[
+                            original_file_data["feature"] == feature
+                        ]["frequency"].values[0]
                         df.at[index, feature] = actual_value
     return df
 
 
 X_freq_corrected = correct_zeros(X_freq, full_data)
 
+
+# # 정규화 함수
+# def normalize_features(df):
+#     feature_cols = [col for col in df.columns if col != "label"]
+#     df[feature_cols] = df[feature_cols].div(df[feature_cols].sum(axis=1), axis=0)
+#     return df
+
+
+# # 정규화 수행
+# X_freq_normalized = normalize_features(X_freq_corrected)
+
+# # 데이터 확인
+# print("Final feature vector:")
+# print(X_freq_normalized.head())
+
+# # 데이터 파일로 저장
+# print("Saving corrected and normalized feature vector to CSV...")
+# X_freq_normalized.to_csv("new_frequency_features_corrected_normalized.csv", index=False)
+# print("Process completed.")
+
 # 데이터 확인
-print('Final feature vector:')
+print("Final feature vector:")
 print(X_freq_corrected.head())
 
 # 데이터 파일로 저장
-print('Saving corrected feature vector to CSV...')
-X_freq_corrected.to_csv('new_frequency_features_corrected.csv', index=False)
-print('Process completed.')
+print("Saving corrected feature vector to CSV...")
+X_freq_corrected.to_csv("new_frequency_features_corrected.csv", index=False)
+print("Process completed.")
